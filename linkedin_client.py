@@ -36,37 +36,19 @@ class LinkedInClient:
     
     async def post_content(self, content: str, image_path: Optional[str] = None) -> bool:
         """
-        Post content to LinkedIn
+        Post content to LinkedIn - NOTE: linkedin-api library does not support posting
+        This method will log an error and return False
         
         Args:
             content: The text content to post
             image_path: Optional path to image to include
             
         Returns:
-            bool: True if successful, False otherwise
+            bool: Always False as linkedin-api doesn't support posting
         """
-        try:
-            async with self.throttler:
-                if image_path:
-                    # Post with image
-                    result = self.api.post(
-                        text=content,
-                        image_path=image_path
-                    )
-                else:
-                    # Text-only post
-                    result = self.api.post(text=content)
-                
-                if result:
-                    logger.info("Successfully posted to LinkedIn")
-                    return True
-                else:
-                    logger.error("Failed to post to LinkedIn")
-                    return False
-                    
-        except Exception as e:
-            logger.error(f"Error posting to LinkedIn: {e}")
-            return False
+        logger.error("LinkedInClient does not support posting. The linkedin-api library only supports reading data, not posting content.")
+        logger.info("Use LinkedInOfficialClient for posting functionality instead.")
+        return False
     
     async def get_top_connections(self, limit: int = 50) -> List[Dict]:
         """

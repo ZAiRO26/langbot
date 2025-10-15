@@ -43,6 +43,37 @@ class LinkedInAutomationAgent:
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
     
+    def _get_access_token(self) -> str:
+        """Get LinkedIn access token from settings or token file"""
+        # Prefer .env token, else fall back to linkedin_token.json created by OAuth
+        if settings.linkedin_access_token:
+            return settings.linkedin_access_token
+        try:
+            import json
+            with open("linkedin_token.json", "r", encoding="utf-8") as f:
+                token_json = json.load(f)
+                return token_json.get("access_token", "")
+        except Exception:
+            return ""
+    
+    def _select_topic_for_today(self, topics: list) -> str:
+        """Select topic based on current day"""
+        if not topics:
+            return "Professional Insights"
+        day = _day_name_lower()
+        # Map: Wednesday -> first, Saturday -> second, else first
+        if day == "wednesday":
+            return topics[0]
+        if day == "saturday":
+            return topics[1] if len(topics) > 1 else topics[0]
+        return topics[0]
+    
+    def _generate_image_urls(self, topic: str) -> list:
+        """Generate image URLs for a given topic"""
+        slug = _slugify(topic) or "linkedin-topic"
+        seeds = [slug, f"{slug}-2"]
+        return [f"https://picsum.photos/seed/{s}/1200/675" for s in seeds]
+    
     async def initialize(self):
         """Initialize all components"""
         
@@ -243,8 +274,12 @@ class LinkedInAutomationAgent:
                     image_urls=image_urls
                 )
             else:
-                # Fallback to text-only post
-                success = await self.linkedin_client.post_content(post_content)
+                # No fallback - linkedin_client doesn't support posting
+                error_msg = "LinkedIn Official Client not available and linkedin_client doesn't support posting"
+                automation_logger.logger.error(error_msg)
+                log_error("posting_error", error_msg)
+                create_alert("no_posting_client", error_msg)
+                success = False
             
             duration = time.time() - start_time
             
@@ -365,7 +400,7 @@ class LinkedInAutomationAgent:
             log_error("status_error", f"Error getting status: {e}")
             return {"error": str(e)}
 
-    async def main():
+async def main():
     """Main entry point"""
     
     agent = LinkedInAutomationAgent()
@@ -411,36 +446,3 @@ def _now_in_tz() -> datetime:
 
 def _day_name_lower() -> str:
     return _now_in_tz().strftime("%A").lower()
-
-def LinkedInAutomationAgent__get_access_token(self) -> str:
-    # Prefer .env token, else fall back to linkedin_token.json created by OAuth
-    if settings.linkedin_access_token:
-        return settings.linkedin_access_token
-    try:
-        import json
-        with open("linkedin_token.json", "r", encoding="utf-8") as f:
-            token_json = json.load(f)
-            return token_json.get("access_token", "")
-    except Exception:
-        return ""
-
-def LinkedInAutomationAgent__select_topic_for_today(self, topics: list) -> str:
-    if not topics:
-        return "Professional Insights"
-    day = _day_name_lower()
-    # Map: Wednesday -> first, Saturday -> second, else first
-    if day == "wednesday":
-        return topics[0]
-    if day == "saturday":
-        return topics[1] if len(topics) > 1 else topics[0]
-    return topics[0]
-
-def LinkedInAutomationAgent__generate_image_urls(self, topic: str) -> list:
-    slug = _slugify(topic) or "linkedin-topic"
-    seeds = [slug, f"{slug}-2"]
-    return [f"https://picsum.photos/seed/{s}/1200/675" for s in seeds]
-
-# Bind helper methods to class
-LinkedInAutomationAgent._get_access_token = LinkedInAutomationAgent__get_access_token
-LinkedInAutomationAgent._select_topic_for_today = LinkedInAutomationAgent__select_topic_for_today
-LinkedInAutomationAgent._generate_image_urls = LinkedInAutomationAgent__generate_image_urls

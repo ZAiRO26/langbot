@@ -53,8 +53,16 @@ The journey to sustainability is a collective effort. I'm curious to learn from 
         print("-" * 40)
         
         # Post the content
-        success = await linkedin_client.post_content(post_content)
-        
+        # Test posting with the official LinkedIn client
+        if agent.linkedin_official_client:
+            success = await agent.linkedin_official_client.post_content(
+                content=post_content
+            )
+        else:
+            print("❌ LinkedIn Official Client not available. Cannot post content.")
+            print("💡 Make sure you have a valid LinkedIn access token configured.")
+            return
+            
         if success:
             print("\n🎉 SUCCESS! Post published to LinkedIn!")
             print("📱 Check your LinkedIn profile to see the post")

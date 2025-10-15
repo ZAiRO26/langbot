@@ -18,7 +18,7 @@ class OllamaOpenAIClient:
     """
     
     def __init__(self, base_url: str = "http://localhost:11434/v1", 
-                 model: str = "mistral:7b-instruct-v0.3-q4_0"):
+                 model: str = "deepseek-r1:8b"):
         self.base_url = base_url
         self.model = model
         self.api_key = "ollama"  # Dummy key for compatibility

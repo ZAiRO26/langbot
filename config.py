@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     
     # Ollama Settings (Local LLM)
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
-    ollama_model: str = os.getenv("OLLAMA_MODEL", "mistral:7b-instruct-v0.3-q4_0")
+    ollama_model: str = os.getenv("OLLAMA_MODEL", "deepseek-r1:8b")
     
     # Scheduling Settings
     post_days: List[str] = ["wednesday", "saturday"]
@@ -98,7 +98,7 @@ def validate_config():
     
     # Validate Ollama settings (optional, will use defaults if not provided)
     ollama_url = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434/v1')
-    ollama_model = os.getenv('OLLAMA_MODEL', 'mistral:7b-instruct-v0.3-q4_0')
+    ollama_model = os.getenv('OLLAMA_MODEL', 'deepseek-r1:8b')
     
     # Validate time settings
     try:
