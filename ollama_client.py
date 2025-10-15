@@ -52,11 +52,12 @@ class OllamaOpenAIClient:
         }
         
         try:
+            # Increased timeout for deepseek-r1:8b model which can be slower
             response = requests.post(
                 f"{self.base_url}/chat/completions",
                 headers=headers,
                 json=data,
-                timeout=60
+                timeout=180  # 3 minutes timeout for local model
             )
             
             if response.status_code == 200:

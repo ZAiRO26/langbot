@@ -1,10 +1,10 @@
 # LinkedIn Automation Agent
 
-An intelligent AI-powered agent that automates LinkedIn posting and engagement activities. The agent operates twice weekly (Wednesdays and Saturdays) from 9:00 AM to 10:00 AM, intelligently engaging with your top 50 connections and posting high-quality content generated using Perplexity AI.
+An intelligent AI-powered agent that automates LinkedIn posting and engagement activities. The agent operates twice weekly (Wednesdays at 12:00 PM and Saturdays at 9:00 AM) for one hour each, intelligently engaging with your top 50 connections and posting high-quality content generated using Perplexity AI.
 
 ## Features
 
-- **Automated Scheduling**: Runs twice weekly on Wednesdays and Saturdays (9:00-10:00 AM)
+- **Automated Scheduling**: Runs twice weekly on Wednesdays at 12:00 PM and Saturdays at 9:00 AM
 - **Intelligent Engagement**: Engages with top 50 connections' posts before and after your main post
 - **AI-Generated Content**: Uses Perplexity AI to generate professional LinkedIn posts and comments
 - **Rate Limiting**: Built-in protection against LinkedIn rate limits
@@ -153,15 +153,16 @@ print(status)
 
 ### Weekly Schedule
 - **Days**: Wednesdays and Saturdays
-- **Time Window**: 9:00 AM - 10:00 AM (your local timezone)
-- **Main Post**: Exactly at 9:30 AM
+- **Wednesday Time Window**: 12:00 PM - 1:00 PM (your local timezone)
+- **Saturday Time Window**: 9:00 AM - 10:00 AM (your local timezone)
+- **Main Post**: Exactly 30 minutes after session start
 
 ### Engagement Timeline
-- **9:00 - 9:30 AM**: Pre-posting engagement (30 minutes)
+- **First 30 minutes**: Pre-posting engagement
   - Engage with top 50 connections' recent posts
   - Like and comment on relevant content
-- **9:30 AM**: Publish main LinkedIn post
-- **9:30 - 10:00 AM**: Post-posting engagement (30 minutes)
+- **30 minutes after start**: Publish main LinkedIn post
+- **Last 30 minutes**: Post-posting engagement
   - Continue engaging with connections
   - Monitor post performance
 

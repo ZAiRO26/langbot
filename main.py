@@ -3,7 +3,7 @@
 LinkedIn Automation Agent - Main Orchestrator
 
 This is the main entry point for the LinkedIn automation system that:
-- Schedules and manages automated posting twice weekly (Wed/Sat 9-10 AM)
+- Schedules and manages automated posting twice weekly (Wed 12 PM/Sat 9 AM)
 - Handles intelligent engagement with top 50 connections
 - Generates content using Perplexity AI
 - Maintains comprehensive logging and monitoring

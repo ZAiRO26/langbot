@@ -33,7 +33,7 @@ class LinkedInScheduler:
         """
         
         # Schedule for Wednesday
-        schedule.every().wednesday.at("09:00").do(
+        schedule.every().wednesday.at("12:00").do(
             self._start_automation_session,
             engagement_callback=engagement_callback,
             posting_callback=posting_callback,
@@ -48,7 +48,7 @@ class LinkedInScheduler:
             session_end_callback=session_end_callback
         )
         
-        logger.info("Scheduled automation tasks for Wednesdays and Saturdays at 9:00 AM")
+        logger.info("Scheduled automation tasks for Wednesdays at 12:00 PM and Saturdays at 9:00 AM")
     
     def _start_automation_session(self, 
                                  engagement_callback: Callable,
@@ -88,24 +88,24 @@ class LinkedInScheduler:
             session_start = datetime.now(self.timezone)
             logger.info(f"Automation session started at {session_start}")
             
-            # Phase 1: Pre-posting engagement (9:00 - 9:30 AM)
+            # Phase 1: Pre-posting engagement (30 minutes)
             logger.info("Starting pre-posting engagement phase")
             asyncio.run(engagement_callback(phase="pre_posting", duration_minutes=30))
             
-            # Wait until exactly 9:30 AM for posting
-            post_time = session_start.replace(hour=9, minute=30, second=0, microsecond=0)
+            # Wait until exactly 30 minutes after session start for posting
+            post_time = session_start + timedelta(minutes=30)
             current_time = datetime.now(self.timezone)
             
             if current_time < post_time:
                 wait_seconds = (post_time - current_time).total_seconds()
-                logger.info(f"Waiting {wait_seconds} seconds until posting time (9:30 AM)")
+                logger.info(f"Waiting {wait_seconds} seconds until posting time ({post_time.strftime('%H:%M')})")
                 time.sleep(wait_seconds)
             
-            # Phase 2: Main posting (exactly at 9:30 AM)
+            # Phase 2: Main posting (exactly 30 minutes after session start)
             logger.info("Starting main posting phase")
             asyncio.run(posting_callback())
             
-            # Phase 3: Post-posting engagement (9:30 - 10:00 AM)
+            # Phase 3: Post-posting engagement (30 minutes after posting)
             logger.info("Starting post-posting engagement phase")
             asyncio.run(engagement_callback(phase="post_posting", duration_minutes=30))
             
