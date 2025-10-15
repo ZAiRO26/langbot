@@ -1,0 +1,24 @@
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+schedule>=1.2.0
+pytz>=2023.3
+
+# LinkedIn API
+linkedin-api>=2.0.0
+
+# Async and rate limiting
+asyncio-throttle>=1.0.2
+
+# OpenAI API (for Ollama compatibility)
+openai>=1.0.0
+
+# Pydantic settings
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Optional: For better JSON handling
+ujson>=5.8.0
+
+# Optional: For better async support
+aiohttp>=3.8.0
